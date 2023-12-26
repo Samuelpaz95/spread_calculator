@@ -7,8 +7,6 @@ This is a simple API that calculates the spread between two dates. It is written
 - [Installation](#installation)
 - [Usage](#usage)
 - [Features](#features)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Installation
 
