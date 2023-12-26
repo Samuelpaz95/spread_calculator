@@ -19,10 +19,10 @@ class AlertService:
     def add_alert(self, spread_alert_in: SpreadAlertIn) -> SpreadAlertOut:
         spread = self.spread_service.get_market_spread(
             spread_alert_in.market_id)
-        if spread_alert_in.percentage >= spread.percentage:
+        if spread_alert_in.threshold >= spread.percentage:
             raise HTTPException(status_code=BAD_REQUEST,
-                                detail="The alert percentage must be lower than the current spread percentage")
-        new_alert = SpreadAlert(**spread_alert_in.dict())
+                                detail="The alert threshold must be lower than the current spread percentage")
+        new_alert = SpreadAlert(**spread_alert_in.model_dump())
         self.db.add(new_alert)
         self.db.commit()
         self.db.refresh(new_alert)
@@ -30,7 +30,7 @@ class AlertService:
 
     def update_alert(self, alert_id, spread_alert_data: SpreadAlertUpdate) -> SpreadAlertOut:
         alert = self.get_alert(alert_id)
-        for field, value in spread_alert_data.dict(exclude_unset=True).items():
+        for field, value in spread_alert_data.model_dump(exclude_unset=True).items():
             setattr(alert, field, value)
         self.db.add(alert)
         self.db.commit()
@@ -56,7 +56,9 @@ class AlertService:
     def check_alerts(self, alert_id: int) -> CheckAlertOut:
         alert = self.get_alert(alert_id)
         spread = self.spread_service.get_market_spread(alert.market_id)
-        print(alert.percentage, spread.percentage)
-        if alert.percentage >= spread.percentage:
-            return CheckAlertOut(alert=alert, spread=spread)
-        return CheckAlertOut(alert=None, spread=None)
+        triggered = alert.threshold >= spread.percentage
+        return CheckAlertOut(
+            triggered=triggered,
+            spread=spread,
+            alert=alert
+        )

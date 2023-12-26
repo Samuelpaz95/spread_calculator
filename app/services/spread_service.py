@@ -1,14 +1,10 @@
-from http.client import BAD_REQUEST, NOT_FOUND
-
-from fastapi import Depends, HTTPException
+from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from app.config import get_db
 from app.models.spread_alert import SpreadAlert
 from app.schemas.order_book import OrderBook
 from app.schemas.spread import Spread
-from app.schemas.spread_alert import (CheckAlertOut, SpreadAlertIn,
-                                      SpreadAlertOut, SpreadAlertUpdate)
 from app.services.buda_api import BudaApi
 
 

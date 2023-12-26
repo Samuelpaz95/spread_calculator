@@ -14,7 +14,7 @@ async def add_alert(spread_alert_in: SpreadAlertIn, service: AlertService = Depe
     ### Request Body:
     - **SpreadAlertIn**: The alert to add.
         - **market_id**: The market id.
-        - **percentage**: The spread percentage value to trigger the alert.
+        - **threshold**: The spread threshold value to trigger the alert.
 
     ### Response:
     - **SpreadAlertOut**: The added alert.
@@ -62,7 +62,7 @@ async def update_alert(alert_id: int, spread_alert_data: SpreadAlertUpdate, serv
     ### Request Body:
     - **SpreadAlertUpdate**: The alert data to update.
         - **market_id** (optional): The market id.
-        - **percentage** (optional): The spread percentage value to trigger the alert.
+        - **threshold** (optional): The spread threshold value to trigger the alert.
 
     ### Response:
     - **SpreadAlertOut**: The updated alert.

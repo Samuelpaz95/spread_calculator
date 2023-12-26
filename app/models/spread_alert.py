@@ -10,7 +10,7 @@ class SpreadAlert(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     market_id = Column(String(50), unique=True, index=True)
-    percentage = Column(Float, nullable=False)
+    threshold = Column(Float, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow,
                         onupdate=datetime.utcnow)
@@ -19,6 +19,6 @@ class SpreadAlert(Base):
         return f'''<SpreadAlert(
             id={self.id}, 
             market_id={self.market_id}, 
-            percentage={self.percentage}, 
+            threshold={self.threshold}, 
             created_at={self.created_at}, 
             updated_at={self.updated_at}\n)>'''

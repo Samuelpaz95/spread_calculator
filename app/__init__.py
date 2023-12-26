@@ -5,14 +5,10 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
-from app.config import Base, engine
-from app.utils.constants import CRYPTO_DECIMALS
-
 from .routes import router
 
 load_dotenv()
 
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 

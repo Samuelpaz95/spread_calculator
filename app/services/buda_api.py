@@ -59,7 +59,6 @@ class BudaApi:
         url = os.path.join(self.base_url, url)
         response = requests.get(url, auth=self)
         if response.status_code != 200:
-            print(response.json())
             raise HTTPException(status_code=response.status_code,
                                 detail=response.json())
         return response.json()
@@ -74,8 +73,7 @@ class BudaApi:
     def get_async_order_book(self, market_id: str) -> dict | None:
         try:
             return self.get_order_book(market_id)
-        except Exception as e:
-            logging.error(e)
+        except Exception:
             traceback.print_exc()
             return None
 

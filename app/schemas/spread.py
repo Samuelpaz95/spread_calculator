@@ -1,15 +1,17 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
 
 
 class Spread(BaseModel):
     market_id: str = Field(..., alias="market_id")
-    value: float = Field(None, alias="value")
-    percentage: float = Field(None, alias="percentage")
+    value: float = Field(None, alias="value",
+                         description="The value of the spread")
+    percentage: float = Field(None, alias="percentage",
+                              description="The percentage of the spread (0.00% to 100.00%)")
     base_currency: str = Field(..., alias="base_currency")
     quote_currency: str = Field(..., alias="quote_currency")
 
-    class Config:
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "examples": [
                 {
                     "market_id": "BTC-USD",
@@ -27,8 +29,13 @@ class Spread(BaseModel):
 
                 }
             ]
-        }
-        json_round_trip = True
-        json_encoders = {
-            float: lambda v: round(v, 8) if v is not None else None,
-        }
+        }, json_round_trip=True
+    )
+
+    @field_serializer('value')
+    def serialize_value(self, value: float, _info) -> float:
+        return round(value, 8) if value is not None else None
+
+    @field_serializer('percentage')
+    def serialize_percentage(self, percentage: float, _info) -> float:
+        return round(percentage, 2) if percentage is not None else None
